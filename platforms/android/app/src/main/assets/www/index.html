@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.71/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.71/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    <style>
+        @import url(Cesium/Widgets/widgets.css);
+        html,
+        body,
+        #cesiumContainer {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+    <script type="text/javascript" src="cordova.js"></script>
+    <title>DORA</title>
+</head>
+
+<body>
+    <div id="cesiumContainer" style="width: device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"></div>
+    <script>
+        var watch = 0;
+        var xPos = 0;
+        var yPos = 0;
+        window.onload = function() {
+            //init();
+            document.addEventListener("deviceready", init, false);
+        }
+
+        function init() {
+            watch = navigator.accelerometer.watchAcceleration(success, failure, {
+                frequency: 100
+            });
+        }
+
+        function success(accel) {
+            document.getElementById("xOut").innerHTML = accel.x;
+            document.getElementById("yOut").innerHTML = accel.y;
+            document.getElementById("zOut").innerHTML = accel.z;
+            xPos += -1 * (accel.x * 1.5);
+            yPos += (accel.y * 1.5);
+        }
+
+        function failure() {
+            notification.alert("Error");
+        }
+        Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxM2IwN2IyYy1kNTJhLTQzNWYtYjc1Zi04YTcwOTRlYmIyNzUiLCJpZCI6MjE3MjUsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1ODA0MDk4MzJ9.YMusm2MIxy01Tk7obCee6kmeWX0_7nMHK51HJBOO7Jo';
+        var viewer = new Cesium.Viewer("cesiumContainer", {
+            vrButton: true,
+            terrainExaggeration: 2.0,
+        });
+        viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
+            url: 'https://api.maptiler.com/tiles/terrain-quantized-mesh/?key=K2NSsLQ0XHXPJnpQGj7Z' // get your own key at https://cloud.maptiler.com/
+        });
+        var scene = viewer.scene;
+        viewer.scene.primitives.add(Cesium.createOsmBuildings());
+        var canvas = viewer.canvas;
+        canvas.setAttribute("tabindex", "0"); // needed to put focus on the canvas
+        canvas.onclick = function() {
+            canvas.focus();
+        };
+        var ellipsoid = scene.globe.ellipsoid;
+        var startMousePosition;
+        var mousePosition;
+        var flags = {
+            looking: false,
+            moveForward: false,
+            moveBackward: false,
+            moveUp: false,
+            moveDown: false,
+            moveLeft: false,
+            moveRight: false,
+        };
+        var handler = new Cesium.ScreenSpaceEventHandler(canvas);
+        handler.setInputAction(function(movement) {
+            flags.looking = true;
+            mousePosition = startMousePosition = Cesium.Cartesian3.clone(
+                movement.position
+            );
+        }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
+        handler.setInputAction(function(movement) {
+            mousePosition = movement.endPosition;
+        }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+        handler.setInputAction(function(position) {
+            flags.looking = false;
+        }, Cesium.ScreenSpaceEventType.LEFT_UP);
+
+        function getFlagForKeyCode(keyCode) {
+            switch (keyCode) {
+                case "W".charCodeAt(0):
+                    return "moveForward";
+                case "S".charCodeAt(0):
+                    return "moveBackward";
+                case "Q".charCodeAt(0):
+                    return "moveUp";
+                case "E".charCodeAt(0):
+                    return "moveDown";
+                case "D".charCodeAt(0):
+                    return "moveRight";
+                case "A".charCodeAt(0):
+                    return "moveLeft";
+                default:
+                    return undefined;
+            }
+        }
+        document.addEventListener(
+            "keydown",
+            function(e) {
+                var flagName = getFlagForKeyCode(e.keyCode);
+                if (typeof flagName !== "undefined") {
+                    flags[flagName] = true;
+                }
+            },
+            false
+        );
+        document.addEventListener(
+            "keyup",
+            function(e) {
+                var flagName = getFlagForKeyCode(e.keyCode);
+                if (typeof flagName !== "undefined") {
+                    flags[flagName] = false;
+                }
+            },
+            false
+        );
+        viewer.clock.onTick.addEventListener(function(clock) {
+            var camera = viewer.camera;
+            if (flags.looking) {
+                var width = canvas.clientWidth;
+                var height = canvas.clientHeight;
+                // Coordinate (0.0, 0.0) will be where the mouse was clicked.
+                var x = xPos / width;
+                var y = yPos / height;
+
+                var lookFactor = 0.05;
+                camera.lookRight(x * lookFactor);
+                camera.lookUp(y * lookFactor);
+            }
+            // Change movement speed based on the distance of the camera to the surface of the ellipsoid.
+            var cameraHeight = ellipsoid.cartesianToCartographic(camera.position)
+                .height;
+            var moveRate = cameraHeight / 100.0;
+
+            if (flags.moveForward) {
+                camera.moveForward(moveRate);
+            }
+            if (flags.moveBackward) {
+                camera.moveBackward(moveRate);
+            }
+            if (flags.moveUp) {
+                camera.moveUp(moveRate);
+            }
+            if (flags.moveDown) {
+                camera.moveDown(moveRate);
+            }
+            if (flags.moveLeft) {
+                camera.moveLeft(moveRate);
+            }
+            if (flags.moveRight) {
+                camera.moveRight(moveRate);
+            }
+        });
+    </script>
+</body>
+
+</html>
