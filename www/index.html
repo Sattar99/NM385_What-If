@@ -57,12 +57,32 @@
             url: 'https://api.maptiler.com/tiles/terrain-quantized-mesh/?key=K2NSsLQ0XHXPJnpQGj7Z' // get your own key at https://cloud.maptiler.com/
         });
         var scene = viewer.scene;
-        viewer.scene.primitives.add(Cesium.createOsmBuildings());
         var canvas = viewer.canvas;
         canvas.setAttribute("tabindex", "0"); // needed to put focus on the canvas
         canvas.onclick = function() {
             canvas.focus();
         };
+
+
+        var ellipsoid = scene.globe.ellipsoid;
+
+        var tileset = new Cesium.Cesium3DTileset({
+            url: Cesium.IonResource.fromAssetId(16421),
+        });
+        viewer.scene.primitives.add(tileset);
+
+        viewer.scene.camera.setView({
+            destination: new Cesium.Cartesian3(
+                4401744.644145314,
+                225051.41078911052,
+                4595420.374784433
+            ),
+            orientation: new Cesium.HeadingPitchRoll(
+                5.646733805039757, -0.276607153839886,
+                6.281110875400085
+            ),
+        });
+
         var ellipsoid = scene.globe.ellipsoid;
         var startMousePosition;
         var mousePosition;
