@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no" />
     <script src="https://cesium.com/downloads/cesiumjs/releases/1.71/Build/Cesium/Cesium.js"></script>
     <link href="https://cesium.com/downloads/cesiumjs/releases/1.71/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
     <style>
@@ -10,22 +11,10 @@
         html,
         body,
         #cesiumContainer {
-            height: 98%;
+            height: 100%;
             margin: 0;
             padding: 0;
             overflow: hidden;
-        }
-        
-        #footerTable {
-            width: 100%;
-        }
-        
-        footer {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 30px;
-            background: #ccc;
         }
     </style>
     <script type="text/javascript" src="cordova.js"></script>
@@ -151,13 +140,13 @@
                 var x = xPos / width;
                 var y = yPos / height;
 
+
                 var lookFactor = 0.05;
                 camera.lookRight(x * lookFactor);
                 camera.lookUp(y * lookFactor);
             }
             // Change movement speed based on the distance of the camera to the surface of the ellipsoid.
-            var cameraHeight = ellipsoid.cartesianToCartographic(camera.position)
-                .height;
+            var cameraHeight = ellipsoid.cartesianToCartographic(camera.position).height;
             var moveRate = cameraHeight / 100.0;
 
             if (flags.moveForward) {
@@ -180,15 +169,6 @@
             }
         });
     </script>
-    <footer>
-        <table id="footerTable">
-            <tr>
-                <td>X: <span id="xOut">0</span></td>
-                <td>Y: <span id="yOut">0</span></td>
-                <td>Z: <span id="zOut">0</span></td>
-            </tr>
-        </table>
-    </footer>
 </body>
 
 </html>
