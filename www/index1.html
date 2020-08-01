@@ -82,26 +82,75 @@
             tileHeight: 512
         }));
         viewer.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(-11.2153, -43.2958, null, ellipsoid),
-            point: {
-                color: Cesium.Color.SKYBLUE,
-                pixelSize: 10,
-                outlineColor: Cesium.Color.YELLOW,
-                outlineWidth: 3,
-                heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-            },
-            label: {
-                text: 'Tycho',
-                font: '14pt sans-serif',
-                heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-                horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
-                verticalOrigin: Cesium.VerticalOrigin.BASELINE,
-                fillColor: Cesium.Color.BLACK,
-                showBackground: true,
-                backgroundColor: new Cesium.Color(1, 1, 1, 0.7),
-                backgroundPadding: new Cesium.Cartesian2(8, 4),
-            }
-        });
+    position: Cesium.Cartesian3.fromDegrees(45.4762, 75.4885, null, ellipsoid),
+    point : {
+        color : Cesium.Color.SKYBLUE,
+        pixelSize : 10,
+        outlineColor : Cesium.Color.YELLOW,
+        outlineWidth : 3,
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND
+    },
+    label : {
+        text : 'Apollo',
+        font : '14pt sans-serif',
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND,
+        horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
+        verticalOrigin : Cesium.VerticalOrigin.BASELINE,
+        fillColor : Cesium.Color.BLACK,
+        showBackground : true,
+        backgroundColor : new Cesium.Color(1, 1, 1, 0.7),
+        backgroundPadding : new Cesium.Cartesian2(8, 4),
+        disableDepthTestDistance : Number.POSITIVE_INFINITY // draws the label in front of terrain
+    }
+});
+viewer.entities.add({
+    position: Cesium.Cartesian3.fromDegrees(-11.2153, -43.2958, null, ellipsoid),
+    point : {
+        color : Cesium.Color.SKYBLUE,
+        pixelSize : 10,
+        outlineColor : Cesium.Color.YELLOW,
+        outlineWidth : 3,
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND
+    },
+    label : {
+        text : 'Tycho',
+        font : '14pt sans-serif',
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND,
+        horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
+        verticalOrigin : Cesium.VerticalOrigin.BASELINE,
+        fillColor : Cesium.Color.BLACK,
+        showBackground : true,
+        backgroundColor : new Cesium.Color(1, 1, 1, 0.7),
+        backgroundPadding : new Cesium.Cartesian2(8, 4),
+        disableDepthTestDistance : Number.POSITIVE_INFINITY // draws the label in front of terrain
+    }
+});
+
+viewer.entities.add({
+    position: Cesium.Cartesian3.fromDegrees(53, 169, null, ellipsoid),
+    point : {
+        color : Cesium.Color.SKYBLUE,
+        pixelSize : 10,
+        outlineColor : Cesium.Color.YELLOW,
+        outlineWidth : 3,
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND
+    },
+    label : {
+        text : 'Aitken',
+        font : '14pt sans-serif',
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND,
+        horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
+        verticalOrigin : Cesium.VerticalOrigin.BASELINE,
+        fillColor : Cesium.Color.BLACK,
+      showBackground : true,
+       backgroundColor : new Cesium.Color(1, 1, 1, 0.7),
+        backgroundPadding : new Cesium.Cartesian2(8, 4),
+        disableDepthTestDistance : Number.POSITIVE_INFINITY // draws the label in front of terrain
+    }
+});
+
+
+
         var scene = viewer.scene;
         var canvas = viewer.canvas;
         canvas.setAttribute("tabindex", "0"); // needed to put focus on the canvas
