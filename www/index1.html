@@ -81,73 +81,149 @@
             tileWidth: 512,
             tileHeight: 512
         }));
-        viewer.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(45.4762, 75.4885, null, ellipsoid),
-            point: {
-                color: Cesium.Color.SKYBLUE,
-                pixelSize: 10,
-                outlineColor: Cesium.Color.YELLOW,
-                outlineWidth: 3,
-                heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-            },
-            label: {
-                text: 'Apollo',
-                font: '14pt sans-serif',
-                heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-                horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
-                verticalOrigin: Cesium.VerticalOrigin.BASELINE,
-                fillColor: Cesium.Color.BLACK,
-                showBackground: true,
-                backgroundColor: new Cesium.Color(1, 1, 1, 0.7),
-                backgroundPadding: new Cesium.Cartesian2(8, 4),
-                disableDepthTestDistance: Number.POSITIVE_INFINITY // draws the label in front of terrain
-            }
-        });
-        viewer.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(-11.2153, -43.2958, null, ellipsoid),
-            point: {
-                color: Cesium.Color.SKYBLUE,
-                pixelSize: 10,
-                outlineColor: Cesium.Color.YELLOW,
-                outlineWidth: 3,
-                heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-            },
-            label: {
-                text: 'Tycho',
-                font: '14pt sans-serif',
-                heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-                horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
-                verticalOrigin: Cesium.VerticalOrigin.BASELINE,
-                fillColor: Cesium.Color.BLACK,
-                showBackground: true,
-                backgroundColor: new Cesium.Color(1, 1, 1, 0.7),
-                backgroundPadding: new Cesium.Cartesian2(8, 4),
-                disableDepthTestDistance: Number.POSITIVE_INFINITY // draws the label in front of terrain
-            }
-        });
+      viewer.entities.add({
+    position: Cesium.Cartesian3.fromDegrees(45.4762, 75.4885, null, ellipsoid),
+    point : {
+        color : Cesium.Color.SKYBLUE,
+        pixelSize : 10,
+        outlineColor : Cesium.Color.YELLOW,
+        outlineWidth : 3,
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND
+    },
+    label : {
+        text : 'Apollo- Dia :207 km, Colongitude: 254° at sunrise',
+        font : '8pt sans-serif',
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND,
+        horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
+        verticalOrigin : Cesium.VerticalOrigin.BASELINE,
+        fillColor : Cesium.Color.BLACK,
+        showBackground : true,
+        backgroundColor : new Cesium.Color(1, 1, 1, 0.7),
+        backgroundPadding : new Cesium.Cartesian2(8, 4),
+        //disableDepthTestDistance : Number.POSITIVE_INFINITY // draws the label in front of terrain
+    }
+});
+viewer.entities.add({
+    position: Cesium.Cartesian3.fromDegrees(-11.2153, -43.2958, null, ellipsoid),
+    point : {
+        color : Cesium.Color.SKYBLUE,
+        pixelSize : 10,
+        outlineColor : Cesium.Color.YELLOW,
+        outlineWidth : 3,
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND
+    },
+    
 
-        viewer.entities.add({
-            position: Cesium.Cartesian3.fromDegrees(53, 169, null, ellipsoid),
-            point: {
-                color: Cesium.Color.SKYBLUE,
-                pixelSize: 10,
-                outlineColor: Cesium.Color.YELLOW,
-                outlineWidth: 3,
-                heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
-            },
-            label: {
-                text: 'Aitken',
-                font: '14pt sans-serif',
-                heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-                horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
-                verticalOrigin: Cesium.VerticalOrigin.BASELINE,
-                fillColor: Cesium.Color.BLACK,
-                showBackground: true,
-                backgroundColor: new Cesium.Color(1, 1, 1, 0.7),
-                backgroundPadding: new Cesium.Cartesian2(8, 4),
-                disableDepthTestDistance: Number.POSITIVE_INFINITY // draws the label in front of terrain
-            }
-        });
+    label : {
+        text : 'Tycho- Dia :82 km, Peak: 2 Km',
+        font : '8pt sans-serif',
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND,
+        horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
+        verticalOrigin : Cesium.VerticalOrigin.BASELINE,
+        fillColor : Cesium.Color.BLACK,
+        showBackground : true,
+        backgroundColor : new Cesium.Color(1, 1, 1, 0.7),
+        backgroundPadding : new Cesium.Cartesian2(8, 4),
+        disableDepthTestDistance : Number.POSITIVE_INFINITY // draws the label in front of terrain
+    }
+
+});
+
+viewer.entities.add({
+    position: Cesium.Cartesian3.fromDegrees(53, 169, null, ellipsoid),
+    point : {
+        color : Cesium.Color.SKYBLUE,
+        pixelSize : 10,
+        outlineColor : Cesium.Color.YELLOW,
+        outlineWidth : 3,
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND
+    },
+    label : {
+        text : 'Aitken- Dia: 135 km, Colongitude: 187° at sunrise',
+        font : '8pt sans-serif',
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND,
+        horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
+        verticalOrigin : Cesium.VerticalOrigin.BASELINE,
+        fillColor : Cesium.Color.BLACK,
+      showBackground : true,
+       backgroundColor : new Cesium.Color(1, 1, 1, 0.7),
+        backgroundPadding : new Cesium.Cartesian2(8, 4),
+        disableDepthTestDistance : Number.POSITIVE_INFINITY // draws the label in front of terrain
+    }
+});
+
+
+
+viewer.entities.add({
+    position: Cesium.Cartesian3.fromDegrees(4.0, 157.4, null, ellipsoid),
+    point : {
+        color : Cesium.Color.SKYBLUE,
+        pixelSize : 10,
+        outlineColor : Cesium.Color.YELLOW,
+        outlineWidth : 3,
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND
+    },
+    label : {
+        text : 'Korolev- Dia: 437 km',
+        font : '8pt sans-serif',
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND,
+        horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
+        verticalOrigin : Cesium.VerticalOrigin.BASELINE,
+        fillColor : Cesium.Color.BLACK,
+      showBackground : true,
+       backgroundColor : new Cesium.Color(1, 1, 1, 0.7),
+        backgroundPadding : new Cesium.Cartesian2(8, 4),
+        disableDepthTestDistance : Number.POSITIVE_INFINITY // draws the label in front of terrain
+    }
+});
+
+viewer.entities.add({
+    position: Cesium.Cartesian3.fromDegrees(20.3, 69.8, null, ellipsoid),
+    point : {
+        color : Cesium.Color.SKYBLUE,
+        pixelSize : 10,
+        outlineColor : Cesium.Color.YELLOW,
+        outlineWidth : 3,
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND
+    },
+    label : {
+        text : 'Balmer - Dia: 138.0 km',
+        font : '8pt sans-serif',
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND,
+        horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
+        verticalOrigin : Cesium.VerticalOrigin.BASELINE,
+        fillColor : Cesium.Color.BLACK,
+      showBackground : true,
+       backgroundColor : new Cesium.Color(1, 1, 1, 0.7),
+        backgroundPadding : new Cesium.Cartesian2(8, 4),
+        disableDepthTestDistance : Number.POSITIVE_INFINITY // draws the label in front of terrain
+    }
+});
+
+viewer.entities.add({
+    position: Cesium.Cartesian3.fromDegrees(44.8,175.9, null, ellipsoid),
+    point : {
+        color : Cesium.Color.SKYBLUE,
+        pixelSize : 10,
+        outlineColor : Cesium.Color.YELLOW,
+        outlineWidth : 3,
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND
+    },
+    label : {
+        text : 'Von Kármán  - Dia: 18.0 km',
+        font : '8pt sans-serif',
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND,
+        horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
+        verticalOrigin : Cesium.VerticalOrigin.BASELINE,
+        fillColor : Cesium.Color.BLACK,
+      showBackground : true,
+       backgroundColor : new Cesium.Color(1, 1, 1, 0.7),
+        backgroundPadding : new Cesium.Cartesian2(8, 4),
+        disableDepthTestDistance : Number.POSITIVE_INFINITY // draws the label in front of terrain
+    }
+});
+
+
 
 
 
