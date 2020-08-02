@@ -15,10 +15,10 @@
     </feature>
     <name>DORA</name>
     <description>
-        An Application to visualize terrains
+        An Application to explore earth and moon
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="moohammedsattar@gmail.com">
+        What If? Team
     </author>
     <content src="index.html" />
     <access origin="*" />
