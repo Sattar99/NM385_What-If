@@ -117,6 +117,77 @@
                     return undefined;
             }
         }
+        viewer.entities.add({
+    position: Cesium.Cartesian3.fromDegrees(86.922623, 27.986065, null, ellipsoid),
+    point : {
+        color : Cesium.Color.SKYBLUE,
+        pixelSize : 10,
+        outlineColor : Cesium.Color.YELLOW,
+        outlineWidth : 3,
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND
+    },
+  label : {
+        text : '"mount everest" height:8,848 m ',
+        
+        font : '8pt sans-serif',
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND,
+        horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
+        verticalOrigin : Cesium.VerticalOrigin.BASELINE,
+        fillColor : Cesium.Color.BLACK,
+        showBackground : true,
+        backgroundColor : new Cesium.Color(1, 1, 1, 0.7),
+        backgroundPadding : new Cesium.Cartesian2(8, 4),
+        disableDepthTestDistance : Number.POSITIVE_INFINITY // draws the label in front of terrain
+    }
+  });
+viewer.entities.add({
+    position: Cesium.Cartesian3.fromDegrees( 119.7273,37.7137,null, ellipsoid),
+    point : {
+        color : Cesium.Color.SKYBLUE,
+        pixelSize : 10,
+        outlineColor : Cesium.Color.YELLOW,
+        outlineWidth : 3,
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND
+    },
+  label : {
+        text : 'HalfDome height: 2694m',
+        
+        font : '8pt sans-serif',
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND,
+        horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
+        verticalOrigin : Cesium.VerticalOrigin.BASELINE,
+        fillColor : Cesium.Color.BLACK,
+        showBackground : true,
+        backgroundColor : new Cesium.Color(1, 1, 1, 0.7),
+        backgroundPadding : new Cesium.Cartesian2(8, 4),
+        disableDepthTestDistance : Number.POSITIVE_INFINITY // draws the label in front of terrain
+    }
+  });
+viewer.entities.add({
+    position: Cesium.Cartesian3.fromDegrees( 37.6910, 122.3108,null, ellipsoid),
+    point : {
+        color : Cesium.Color.SKYBLUE,
+        pixelSize : 10,
+        outlineColor : Cesium.Color.YELLOW,
+        outlineWidth : 3,
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND
+    },
+  label : {
+        text : 'SanFranciscoBay ',
+        
+        font : '8pt sans-serif',
+        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND,
+        horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
+        verticalOrigin : Cesium.VerticalOrigin.BASELINE,
+        fillColor : Cesium.Color.BLACK,
+        showBackground : true,
+        backgroundColor : new Cesium.Color(1, 1, 1, 0.7),
+        backgroundPadding : new Cesium.Cartesian2(8, 4),
+        disableDepthTestDistance : Number.POSITIVE_INFINITY // draws the label in front of terrain
+    }
+  });
+
+
         document.addEventListener(
             "keydown",
             function(e) {
