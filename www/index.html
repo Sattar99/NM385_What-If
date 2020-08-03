@@ -11,10 +11,28 @@
         html,
         body,
         #cesiumContainer {
-            height: 100%;
+            width: 100%;
+            height: 98%;
             margin: 0;
             padding: 0;
             overflow: hidden;
+        }
+        
+        #footerTable {
+            width: 100%;
+        }
+        
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 30px;
+            background: #ccc;
+        }
+        
+        #gyroButton {
+            width: 100%;
+            position: absolute;
         }
     </style>
     <script type="text/javascript" src="cordova.js"></script>
@@ -22,8 +40,116 @@
 </head>
 
 <body>
-    <div id="cesiumContainer" style="width: device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"></div>
+    <!--width: device-width; initial-scale=1; maximum-scale=1; minimum-scale=1; user-scalable=no-->
+    <div id="cesiumContainer"></div>
     <script>
+        var enableGyro = false;
+        window.addEventListener("deviceorientation", handleOrientation, true);
+
+        function handleOrientation(event) {
+            var alpha = event.alpha;
+            var beta = event.beta;
+            var gamma = event.gamma;
+            document.getElementById('gyroText').innerHTML = enableGyro ? alpha + '&nbsp;&nbsp;' + beta + '&nbsp;&nbsp;' + gamma : '';
+
+        }
+        Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxM2IwN2IyYy1kNTJhLTQzNWYtYjc1Zi04YTcwOTRlYmIyNzUiLCJpZCI6MjE3MjUsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1ODA0MDk4MzJ9.YMusm2MIxy01Tk7obCee6kmeWX0_7nMHK51HJBOO7Jo';
+        var viewer = new Cesium.Viewer("cesiumContainer", {
+            vrButton: true,
+            terrainExaggeration: 2.0,
+        });
+        viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
+            url: 'https://api.maptiler.com/tiles/terrain-quantized-mesh/?key=K2NSsLQ0XHXPJnpQGj7Z' // get your own key at https://cloud.maptiler.com/
+        });
+        var scene = viewer.scene;
+        var canvas = viewer.canvas;
+        canvas.setAttribute("tabindex", "0"); // needed to put focus on the canvas
+        canvas.onclick = function() {
+            canvas.focus();
+        };
+
+
+        var ellipsoid = scene.globe.ellipsoid;
+
+        var voice = {
+            permission: true,
+            initialize: function() {
+                document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+            },
+            onDeviceReady: function() {
+                var self = this;
+                window.plugins.speechRecognition.hasPermission(
+                    function(permission) {
+                        if (!permission) {
+                            window.plugins.speechRecognition.requestPermission(
+                                function(permissionTrue) {
+                                    self.permission = true;
+                                    if (permissionTrue == 'OK') {
+                                        alert("Voice command access permission successfully accepted!");
+                                    } else {
+                                        alert("Permission to access voice command denied!");
+                                    }
+                                },
+                                function(erro) {
+                                    self.permission = false;
+                                    alert("permission error" + erro);
+                                });
+                        }
+                    },
+                    function(error) {
+                        alert("erro");
+                        alert(error);
+                    });
+            },
+            stopCommand: function() {
+                window.plugins.speechRecognition.stopListening(
+                    function() {
+                        alert("Voice command disabled!");
+                        var text = "";
+                        $("#texto").html("").append(text);
+                    },
+                    function() {
+                        alert("erro");
+                    });
+            },
+            voiceCommand: function() {
+                var self = this;
+                if (!self.permission) {
+                    alert("No permission to use the microphone");
+                    return false;
+                }
+                var options = {
+                    language: "pt-BR",
+                    showPartial: true,
+                    showPopup: false
+                };
+                window.plugins.speechRecognition.startListening(
+                    function(dados) {
+                        $.each(dados, function(key, texto) {
+                            $("#texto").html("").append(texto);
+                            if (texto == "e") {
+                                mounteverest();
+                            } else if (texto == "Dom") {
+                                halfdome();
+                            } else if (texto == "Santos") {
+                                var target = new Cesium.Cartesian3(-2708814.85583248, -4254159.450845907,
+                                    3891403.9457429945
+                                );
+                                var offset = new Cesium.Cartesian3(
+                                    70642.66030209465, -31661.517948317807,
+                                    35505.179997143336
+                                );
+                                viewer.camera.lookAt(target, offset);
+                                viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+                            }
+                        });
+                    },
+                    function(erro) {
+                        alert("error: " + erro);
+                    },
+                    options);
+            },
+        };
         var watch = 0;
         var xPos = 0;
         var yPos = 0;
@@ -49,25 +175,34 @@
         function failure() {
             notification.alert("Error");
         }
-        Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxM2IwN2IyYy1kNTJhLTQzNWYtYjc1Zi04YTcwOTRlYmIyNzUiLCJpZCI6MjE3MjUsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1ODA0MDk4MzJ9.YMusm2MIxy01Tk7obCee6kmeWX0_7nMHK51HJBOO7Jo';
-        var viewer = new Cesium.Viewer("cesiumContainer", {
-            vrButton: true,
-            terrainExaggeration: 2.0,
-        });
-        viewer.terrainProvider = new Cesium.CesiumTerrainProvider({
-            url: 'https://api.maptiler.com/tiles/terrain-quantized-mesh/?key=K2NSsLQ0XHXPJnpQGj7Z' // get your own key at https://cloud.maptiler.com/
-        });
-        var scene = viewer.scene;
-        var canvas = viewer.canvas;
-        canvas.setAttribute("tabindex", "0"); // needed to put focus on the canvas
-        canvas.onclick = function() {
-            canvas.focus();
-        };
 
+        function mounteverest() {
+            var target = new Cesium.Cartesian3(
+                300770.50872389384,
+                5634912.131394585,
+                2978152.2865545116
+            );
+            var offset = new Cesium.Cartesian3(
+                6344.974098678562, -793.3419798081741,
+                2499.9508860763162
+            );
+            viewer.camera.lookAt(target, offset);
+            viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
 
-        var ellipsoid = scene.globe.ellipsoid;
+        }
 
-        var ellipsoid = scene.globe.ellipsoid;
+        function halfdome() {
+            var target = new Cesium.Cartesian3(-2489625.0836225147, -4393941.44443024,
+                3882535.9454173897
+            );
+            var offset = new Cesium.Cartesian3(-6857.40902037546,
+                412.3284835694358,
+                2147.5545426812023
+            );
+            viewer.camera.lookAt(target, offset);
+            viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+
+        }
         var startMousePosition;
         var mousePosition;
         var flags = {
@@ -108,11 +243,7 @@
                 case "A".charCodeAt(0):
                     return "moveLeft";
                 case "X".charCodeAt(0):
-                    return "MountEverest";
-                case "Z".charCodeAt(0):
-                    return "HalfDome";
-                case "V".charCodeAt(0):
-                    return "SanFranciscoBay";
+                    return "Search";
                 default:
                     return undefined;
             }
@@ -124,40 +255,8 @@
                 if (typeof flagName !== "undefined") {
                     flags[flagName] = true;
                 }
-                if (flags.MountEverest) {
-                    var target = new Cesium.Cartesian3(
-                        300770.50872389384,
-                        5634912.131394585,
-                        2978152.2865545116
-                    );
-                    var offset = new Cesium.Cartesian3(
-                        6344.974098678562, -793.3419798081741,
-                        2499.9508860763162
-                    );
-                    viewer.camera.lookAt(target, offset);
-                    viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
-                }
-                if (flags.HalfDome) {
-                    var target = new Cesium.Cartesian3(-2489625.0836225147, -4393941.44443024,
-                        3882535.9454173897
-                    );
-                    var offset = new Cesium.Cartesian3(-6857.40902037546,
-                        412.3284835694358,
-                        2147.5545426812023
-                    );
-                    viewer.camera.lookAt(target, offset);
-                    viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
-                }
-                if (flags.SanFranciscoBay) {
-                    var target = new Cesium.Cartesian3(-2708814.85583248, -4254159.450845907,
-                        3891403.9457429945
-                    );
-                    var offset = new Cesium.Cartesian3(
-                        70642.66030209465, -31661.517948317807,
-                        35505.179997143336
-                    );
-                    viewer.camera.lookAt(target, offset);
-                    viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+                if (flagName == "Search") {
+                    voice.voiceCommand();
                 }
             },
             false
@@ -208,9 +307,27 @@
             }
 
         });
+
+        function toggleGyro() {
+            enableGyro = !enableGyro;
+        }
     </script>
     <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
+    <button id='gyroButton' type="button" onClick='toggleGyro()'>
+        <div>
+            <p>Gyro</p>
+            <p id='gyroText'></p>
+        </div>
+        <!-- <table id="footerTable">
+            <tr>
+                <td>X: <span id="xOut">0</span></td>
+                <td>Y: <span id="yOut">0</span></td>
+                <td>Z: <span id="zOut">0</span></td>
+            </tr>
+        </table> -->
+    </button>
+
 </body>
 
 </html>
