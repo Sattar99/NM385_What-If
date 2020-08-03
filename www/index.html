@@ -11,28 +11,10 @@
         html,
         body,
         #cesiumContainer {
-            width: 100%;
-            height: 98%;
+            height: 100%;
             margin: 0;
             padding: 0;
             overflow: hidden;
-        }
-        
-        #footerTable {
-            width: 100%;
-        }
-        
-        footer {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 30px;
-            background: #ccc;
-        }
-        
-        #gyroButton {
-            width: 100%;
-            position: absolute;
         }
     </style>
     <script type="text/javascript" src="cordova.js"></script>
@@ -40,20 +22,10 @@
 </head>
 
 <body>
-    <!--width: device-width; initial-scale=1; maximum-scale=1; minimum-scale=1; user-scalable=no-->
-    <div id="cesiumContainer"></div>
+    <div id="cesiumContainer" style="width: device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no;"></div>
+    <div id='detailsDiv' style='padding: 32; color: white;width:10%;position: fixed;top:32;'></div>
     <script>
-        var enableGyro = false;
-        window.addEventListener("deviceorientation", handleOrientation, true);
-
-        function handleOrientation(event) {
-            var alpha = event.alpha;
-            var beta = event.beta;
-            var gamma = event.gamma;
-            document.getElementById('gyroText').innerHTML = enableGyro ? alpha + '&nbsp;&nbsp;' + beta + '&nbsp;&nbsp;' + gamma : '';
-
-        }
-        Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxM2IwN2IyYy1kNTJhLTQzNWYtYjc1Zi04YTcwOTRlYmIyNzUiLCJpZCI6MjE3MjUsInNjb3BlcyI6WyJhc3IiLCJnYyJdLCJpYXQiOjE1ODA0MDk4MzJ9.YMusm2MIxy01Tk7obCee6kmeWX0_7nMHK51HJBOO7Jo';
+        Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIyYWEyZWM5Mi01YzRmLTQ3MGEtYjk4ZS1hNzkyNTRiMmZiMDEiLCJpZCI6MjE3MjUsInNjb3BlcyI6WyJhc2wiLCJhc3IiLCJhc3ciLCJnYyIsInByIl0sImlhdCI6MTU5NjQzMTU4Mn0.LI2d5XN5WiunZxBrSpV_4eZC4RaI0Axiy18Gj_q8EmU';
         var viewer = new Cesium.Viewer("cesiumContainer", {
             vrButton: true,
             terrainExaggeration: 2.0,
@@ -67,10 +39,7 @@
         canvas.onclick = function() {
             canvas.focus();
         };
-
-
         var ellipsoid = scene.globe.ellipsoid;
-
         var voice = {
             permission: true,
             initialize: function() {
@@ -97,8 +66,7 @@
                         }
                     },
                     function(error) {
-                        alert("erro");
-                        alert(error);
+                        alert("error: " + erro);
                     });
             },
             stopCommand: function() {
@@ -119,7 +87,7 @@
                     return false;
                 }
                 var options = {
-                    language: "pt-BR",
+                    language: "en-IN",
                     showPartial: true,
                     showPopup: false
                 };
@@ -127,20 +95,12 @@
                     function(dados) {
                         $.each(dados, function(key, texto) {
                             $("#texto").html("").append(texto);
-                            if (texto == "e") {
+                            if (texto == "Mount Everest") {
                                 mounteverest();
-                            } else if (texto == "Dom") {
+                            } else if (texto == "half dome") {
                                 halfdome();
-                            } else if (texto == "Santos") {
-                                var target = new Cesium.Cartesian3(-2708814.85583248, -4254159.450845907,
-                                    3891403.9457429945
-                                );
-                                var offset = new Cesium.Cartesian3(
-                                    70642.66030209465, -31661.517948317807,
-                                    35505.179997143336
-                                );
-                                viewer.camera.lookAt(target, offset);
-                                viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+                            } else if (texto == "San Francisco Bay") {
+                                SanFransisco();
                             }
                         });
                     },
@@ -150,6 +110,7 @@
                     options);
             },
         };
+        voice.initialize();
         var watch = 0;
         var xPos = 0;
         var yPos = 0;
@@ -203,6 +164,21 @@
             viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
 
         }
+
+        function SanFransisco() {
+            var target = new Cesium.Cartesian3(-2708814.85583248, -4254159.450845907,
+                3891403.9457429945
+            );
+            var offset = new Cesium.Cartesian3(
+                70642.66030209465, -31661.517948317807,
+                35505.179997143336
+            );
+            viewer.camera.lookAt(target, offset);
+            viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+        }
+
+
+
         var startMousePosition;
         var mousePosition;
         var flags = {
@@ -214,6 +190,7 @@
             moveLeft: false,
             moveRight: false,
         };
+
         var handler = new Cesium.ScreenSpaceEventHandler(canvas);
         handler.setInputAction(function(movement) {
             flags.looking = true;
@@ -248,77 +225,6 @@
                     return undefined;
             }
         }
-        viewer.entities.add({
-    position: Cesium.Cartesian3.fromDegrees(86.922623, 27.986065, null, ellipsoid),
-    point : {
-        color : Cesium.Color.SKYBLUE,
-        pixelSize : 10,
-        outlineColor : Cesium.Color.YELLOW,
-        outlineWidth : 3,
-        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND
-    },
-  label : {
-        text : '"mount everest" height:8,848 m ',
-        
-        font : '8pt sans-serif',
-        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND,
-        horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
-        verticalOrigin : Cesium.VerticalOrigin.BASELINE,
-        fillColor : Cesium.Color.BLACK,
-        showBackground : true,
-        backgroundColor : new Cesium.Color(1, 1, 1, 0.7),
-        backgroundPadding : new Cesium.Cartesian2(8, 4),
-        disableDepthTestDistance : Number.POSITIVE_INFINITY // draws the label in front of terrain
-    }
-  });
-viewer.entities.add({
-    position: Cesium.Cartesian3.fromDegrees( 119.7273,37.7137,null, ellipsoid),
-    point : {
-        color : Cesium.Color.SKYBLUE,
-        pixelSize : 10,
-        outlineColor : Cesium.Color.YELLOW,
-        outlineWidth : 3,
-        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND
-    },
-  label : {
-        text : 'HalfDome height: 2694m',
-        
-        font : '8pt sans-serif',
-        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND,
-        horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
-        verticalOrigin : Cesium.VerticalOrigin.BASELINE,
-        fillColor : Cesium.Color.BLACK,
-        showBackground : true,
-        backgroundColor : new Cesium.Color(1, 1, 1, 0.7),
-        backgroundPadding : new Cesium.Cartesian2(8, 4),
-        disableDepthTestDistance : Number.POSITIVE_INFINITY // draws the label in front of terrain
-    }
-  });
-viewer.entities.add({
-    position: Cesium.Cartesian3.fromDegrees( 37.6910, 122.3108,null, ellipsoid),
-    point : {
-        color : Cesium.Color.SKYBLUE,
-        pixelSize : 10,
-        outlineColor : Cesium.Color.YELLOW,
-        outlineWidth : 3,
-        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND
-    },
-  label : {
-        text : 'SanFranciscoBay ',
-        
-        font : '8pt sans-serif',
-        heightReference : Cesium.HeightReference.CLAMP_TO_GROUND,
-        horizontalOrigin : Cesium.HorizontalOrigin.LEFT,
-        verticalOrigin : Cesium.VerticalOrigin.BASELINE,
-        fillColor : Cesium.Color.BLACK,
-        showBackground : true,
-        backgroundColor : new Cesium.Color(1, 1, 1, 0.7),
-        backgroundPadding : new Cesium.Cartesian2(8, 4),
-        disableDepthTestDistance : Number.POSITIVE_INFINITY // draws the label in front of terrain
-    }
-  });
-
-
         document.addEventListener(
             "keydown",
             function(e) {
@@ -347,14 +253,12 @@ viewer.entities.add({
             if (flags.looking) {
                 var width = canvas.clientWidth;
                 var height = canvas.clientHeight;
-                // Coordinate (0.0, 0.0) will be where the mouse was clicked.
                 var x = xPos / width;
                 var y = yPos / height;
                 var lookFactor = 0.05;
                 camera.lookRight(x * lookFactor);
                 camera.lookUp(y * lookFactor);
             }
-            // Change movement speed based on the distance of the camera to the surface of the ellipsoid.
             var cameraHeight = ellipsoid.cartesianToCartographic(camera.position).height;
             var moveRate = cameraHeight / 100.0;
 
@@ -376,29 +280,55 @@ viewer.entities.add({
             if (flags.moveRight) {
                 camera.moveRight(moveRate);
             }
-
         });
+        form = document.querySelector('.cesium-geocoder-searchButton').parentElement
+            // form = document.querySelector('.cesium-geocoder-searchButton')?.parentElement;
+        form.onsubmit = function() {
+            setTimeout(() => {
 
-        function toggleGyro() {
-            enableGyro = !enableGyro;
+                var details = '';
+                place = form.firstChild.value;
+                console.log('Place : ', place);
+                switch (place) {
+                    case 'Nepal':
+                        details = "                   Nepal: The small country contains eight of the 10 highest peaks in the world                      ";
+                        break;
+                    case 'India':
+                        details = "India: Thousands of languages are spoken and it is the second largest English speaking country in the world";
+                        break;
+                    case 'Ganga River':
+                        details = "Ganga RIver: 34th longest river in the world by length and it flows 2525 kms from Himalayas to Bangladesh and india";
+                        break;
+                    case 'Switzerland':
+                        details = "Switzerland: There are more than 1500 lakes in Switzerl and containing around 6% of Europe's fresh water stocks";
+                        break;
+                    case 'Iceland':
+                        details = "Iceland: About 11 % of the country is covered by glaciers and it has more than 20 active volcanoes";
+                        break;
+                    case 'Andaman and Nicobar Islands, India':
+                        details = "Andaman and Nicobar Islands: The only active volcano in India, the Barren Island, is present in Andaman Islands";
+                        break;
+                    case 'Himachal Pradesh':
+                        details = "Himachal Pradesh: It has a staggering 37,033 square kilometres of forest area, which makes 66.52% of the total land area";
+                        break;
+                    case 'Mount Everest, China':
+                        details = "Mount Everest: It has a staggering 37,033 square kilometres of forest area, which makes 66.52% of the total land area";
+                        break;
+
+
+
+                    default:
+                        break;
+                }
+                details = '<p style="margin: 32;background-color: rgba(0, 0, 0, 0.5);"><br></br>' + details + '</p>';
+                console.log('Details : ', details);
+                document.getElementById('detailsDiv').innerHTML = details;
+                // window.alert(details)
+            }, 1000);
         }
     </script>
     <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
-    <button id='gyroButton' type="button" onClick='toggleGyro()'>
-        <div>
-            <p>Gyro</p>
-            <p id='gyroText'></p>
-        </div>
-        <!-- <table id="footerTable">
-            <tr>
-                <td>X: <span id="xOut">0</span></td>
-                <td>Y: <span id="yOut">0</span></td>
-                <td>Z: <span id="zOut">0</span></td>
-            </tr>
-        </table> -->
-    </button>
-
 </body>
 
 </html>
