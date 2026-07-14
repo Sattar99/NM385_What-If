@@ -37,11 +37,6 @@ cordova platform add android
 cordova build android
 cordova run android
 ```
-
-## ⚠️ Security note
-
-`www/index.html` currently has a **Cesium Ion access token and a MapTiler API key hardcoded** in the source. If this repo is public, consider rotating these keys and loading them from a config file or environment variable excluded via `.gitignore` instead.
-
 ## License
 
 Apache-2.0 (see `package.json`).
